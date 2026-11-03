@@ -1,0 +1,25 @@
+
+> red-hood-artist-site@1.0.0 build
+> next build
+
+   ▲ Next.js 15.5.28
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (114kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (268kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ✓ Compiled successfully in 14.3s
+   Linting and checking validity of types ...
+Failed to compile.
+
+./middleware.ts:6:65
+Type error: Parameter 'cookies' implicitly has an 'any' type.
+
+[0m [90m 4 |[39m   [36mlet[39m response [33m=[39m [33mNextResponse[39m[33m.[39mnext({ request })[33m;[39m
+ [90m 5 |[39m   [36mconst[39m supabase [33m=[39m createServerClient(process[33m.[39menv[33m.[39m[33mNEXT_PUBLIC_SUPABASE_URL[39m[33m![39m[33m,[39m process[33m.[39menv[33m.[39m[33mNEXT_PUBLIC_SUPABASE_ANON_KEY[39m[33m![39m[33m,[39m {
+[31m[1m>[22m[39m[90m 6 |[39m     cookies[33m:[39m { getAll[33m:[39m () [33m=>[39m request[33m.[39mcookies[33m.[39mgetAll()[33m,[39m setAll[33m:[39m (cookies) [33m=>[39m { cookies[33m.[39mforEach(({ name[33m,[39m value }) [33m=>[39m request[33m.[39mcookies[33m.[39m[36mset[39m(name[33m,[39m value))[33m;[39m response [33m=[39m [33mNextResponse[39m[33m.[39mnext({ request })[33m;[39m cookies[33m.[39mforEach(({ name[33m,[39m value[33m,[39m options }) [33m=>[39m response[33m.[39mcookies[33m.[39m[36mset[39m(name[33m,[39m value[33m,[39m options))[33m;[39m } }
+ [90m   |[39m                                                                 [31m[1m^[22m[39m
+ [90m 7 |[39m   })[33m;[39m
+ [90m 8 |[39m   [36mconst[39m { data[33m:[39m { user } } [33m=[39m [36mawait[39m supabase[33m.[39mauth[33m.[39mgetUser()[33m;[39m
+ [90m 9 |[39m   [36mconst[39m path [33m=[39m request[33m.[39mnextUrl[33m.[39mpathname[33m;[39m[0m
+Next.js build worker exited with code: 1 and signal: null
