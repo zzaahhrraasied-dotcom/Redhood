@@ -2,6 +2,7 @@
 
 import {useEffect,useState} from 'react';
 import Countdown from '@/components/Countdown';
+import {Instagram, Youtube, Music2, Cloud} from 'lucide-react';
 
 type Release = {
   title:string;
@@ -26,6 +27,14 @@ type Settings = {
   soundcloud_url?:string|null;
   youtube_url?:string|null;
 };
+
+function PlatformIcon({label}:{label:string}) {
+  const common = {size:28, strokeWidth:1.7, 'aria-hidden':true as const};
+  if (label==='Instagram') return <Instagram {...common}/>;
+  if (label==='YouTube') return <Youtube {...common}/>;
+  if (label==='Spotify') return <Music2 {...common}/>;
+  return <Cloud {...common}/>;
+}
 
 function cleanUrl(value?:string|null) {
   return typeof value==='string' ? value.trim() : '';
@@ -67,7 +76,17 @@ export default function ReleaseLanding({item,settings}:{item:Release;settings:Se
             </div>
           )}
           <p className="eyebrow mt-6">{settings.site_name||'RED HOOD'}</p>
-          <div className="mt-5 border border-zinc-700 px-4 py-2 text-[10px] tracking-[.28em]">
+          {artistLinks.length>0&&(
+            <nav aria-label="Artist platforms" className="mt-7 flex flex-wrap items-center justify-center gap-5 sm:gap-6">
+              {artistLinks.map(link=>(
+                <a key={link.label} aria-label={link.label} title={link.label} href={link.url} target="_blank" rel="noreferrer"
+                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-zinc-700 bg-zinc-950/70 flex items-center justify-center text-zinc-300 hover:text-white hover:border-zinc-400 hover:bg-zinc-900 transition">
+                  <PlatformIcon label={link.label}/>
+                </a>
+              ))}
+            </nav>
+          )}
+          <div className="mt-7 border border-zinc-700 px-4 py-2 text-[10px] tracking-[.28em]">
             {isReleased?'OUT NOW':'UPCOMING'}
           </div>
           <h1 className="display uppercase text-5xl sm:text-7xl mt-7 tracking-wide">{item.title}</h1>
@@ -101,28 +120,17 @@ export default function ReleaseLanding({item,settings}:{item:Release;settings:Se
         {isReleased&&releaseLinks.length>0&&(
           <section className="mt-10 text-center">
             <p className="eyebrow mb-5">Listen now</p>
-            <div className="flex flex-wrap justify-center gap-3">
+            <div className="flex flex-wrap justify-center items-center gap-5 sm:gap-6">
               {releaseLinks.map(link=>(
-                <a key={link.label} className="btn" href={link.url} target="_blank" rel="noreferrer">
-                  {link.label}
+                <a key={link.label} aria-label={'Listen on '+link.label} title={link.label} href={link.url} target="_blank" rel="noreferrer"
+                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-zinc-700 bg-zinc-950/70 flex items-center justify-center text-zinc-300 hover:text-white hover:border-zinc-400 hover:bg-zinc-900 transition">
+                  <PlatformIcon label={link.label}/>
                 </a>
               ))}
             </div>
           </section>
         )}
 
-        {artistLinks.length>0&&(
-          <section className="mt-14 pt-8 border-t border-zinc-900 text-center">
-            <p className="eyebrow mb-5">Follow the artist</p>
-            <div className="flex flex-wrap justify-center gap-3">
-              {artistLinks.map(link=>(
-                <a key={link.label} className="btn btn-dark" href={link.url} target="_blank" rel="noreferrer">
-                  {link.label}
-                </a>
-              ))}
-            </div>
-          </section>
-        )}
 
         <div className="mt-16 text-center">
           <a href="/music" className="text-[10px] tracking-[.2em] text-zinc-500 hover:text-white transition">
