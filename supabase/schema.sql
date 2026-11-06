@@ -14,6 +14,12 @@ create table if not exists public.site_settings (
   featured_release_id uuid,
   updated_at timestamptz not null default now()
 );
+
+-- Optional background image saved from the admin panel. It remains a draft until
+-- a later frontend rollout explicitly applies it to the public website.
+alter table public.site_settings
+  add column if not exists background_image_url text;
+
 insert into public.site_settings (id) values (1) on conflict (id) do nothing;
 
 create table if not exists public.releases (
