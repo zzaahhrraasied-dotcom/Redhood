@@ -34,7 +34,13 @@ export async function getReleases(status?: string) {
   if (status) q = q.eq('status', status);
 
   const { data } = await q;
-  return data || [];
+  return (data || []).map((release: any) => ({
+    ...release,
+    // Keep the UI's established field names while reading the live DB schema.
+    release_date: release.release_at,
+    release_type: release.type,
+    timezone: release.release_timezone,
+  }));
 }
 
 export async function getPages() {

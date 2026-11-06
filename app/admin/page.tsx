@@ -102,6 +102,7 @@ export default function Admin() {
   const [releases, setReleases] = useState<AnyRow[]>([]);
   const [pages, setPages] = useState<AnyRow[]>([]);
   const [settings, setSettings] = useState<AnyRow>({});
+  const [backgroundImage, setBackgroundImage] = useState('');
   const [release, setRelease] = useState<AnyRow>(blankRelease);
   const [page, setPage] = useState<AnyRow>(blankPage);
   const [editRelease, setEditRelease] = useState<string | null>(null);
@@ -118,7 +119,11 @@ export default function Admin() {
 
     if (r.ok) setReleases(await r.json());
     if (p.ok) setPages(await p.json());
-    if (s.ok) setSettings(await s.json());
+    if (s.ok) {
+      const nextSettings = await s.json();
+      setSettings(nextSettings);
+      setBackgroundImage(nextSettings.background_image_url || '');
+    }
   }
 
   useEffect(() => {
@@ -239,6 +244,32 @@ export default function Admin() {
     setBusy(false);
   }
 
+  async function saveBackground(e: React.FormEvent) {
+    e.preventDefault();
+    setBusy(true);
+    setMsg('');
+
+    try {
+      const res = await fetch('/api/admin/background', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ background_image_url: backgroundImage }),
+      });
+      const j = await res.json();
+      if (!res.ok) throw new Error(j.error);
+
+      setSettings((current) => ({
+        ...current,
+        background_image_url: j.background_image_url || '',
+      }));
+      setMsg('Background draft saved. The live website appearance is unchanged.');
+    } catch (e) {
+      setMsg((e as Error).message);
+    }
+
+    setBusy(false);
+  }
+
   async function remove(kind: 'releases' | 'pages', id: string) {
     if (!confirm('Delete this item? This cannot be undone.')) return;
 
@@ -311,7 +342,7 @@ export default function Admin() {
                 onClick={() => {
                   onChange('');
                   setMsg(
-                    'Image removed. Save settings to apply changes.'
+                    'Image removed. Save changes to keep this update.'
                   );
                 }}
               >
@@ -348,6 +379,7 @@ export default function Admin() {
             ['releases', 'Music releases'],
             ['pages', 'Dynamic pages'],
             ['settings', 'Site identity'],
+            ['background', 'Background'],
           ].map(([k, v]) => (
             <button
               key={k}
@@ -871,6 +903,37 @@ export default function Admin() {
 
               <button className="btn" disabled={busy}>
                 {busy ? 'Saving...' : 'Save site settings'}
+              </button>
+            </form>
+          )}
+
+          {tab === 'background' && (
+            <form
+              onSubmit={saveBackground}
+              className="admin-card max-w-3xl space-y-5"
+            >
+              <div className="eyebrow">Visual management</div>
+              <h2 className="display text-4xl">BACKGROUND MANAGER</h2>
+              <p className="text-sm leading-6 text-zinc-400">
+                Upload and save a background image for a future website update.
+                This is stored as a draft only; it will not change the live website yet.
+              </p>
+
+              {fileField(
+                'Background image',
+                'background_image_url',
+                backgroundImage,
+                setBackgroundImage,
+                true
+              )}
+
+              <div className="border border-zinc-800 p-4 text-xs leading-6 text-zinc-500">
+                CURRENT STATUS: DRAFT ONLY. The existing website background,
+                colors, layout, and visual design remain untouched.
+              </div>
+
+              <button className="btn" disabled={busy}>
+                {busy ? 'Saving...' : 'Save background draft'}
               </button>
             </form>
           )}
