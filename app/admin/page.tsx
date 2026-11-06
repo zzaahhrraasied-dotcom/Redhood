@@ -825,10 +825,10 @@ export default function Admin() {
                 Artist name
                 <input
                   className="input mt-2"
-                  value={settings.artist_name || 'RED HOOD'}
+                  value={settings.site_name || 'RED HOOD'}
                   onChange={e => setSettings({
                     ...settings,
-                    artist_name: e.target.value,
+                    site_name: e.target.value,
                   })}
                 />
               </label>
@@ -858,11 +858,11 @@ export default function Admin() {
 
               {fileField(
                 'Website logo',
-                'logo_image',
-                settings.logo_image || '',
+                'logo_url',
+                settings.logo_url || '',
                 v => setSettings({
                   ...settings,
-                  logo_image: v,
+                  logo_url: v,
                 })
               )}
 
