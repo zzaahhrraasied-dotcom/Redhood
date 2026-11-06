@@ -138,7 +138,7 @@ export default function Admin() {
     try {
       const body = {
         title: release.title,
-        slug: release.slug,
+        slug: String(release.slug || '').trim(),
         type: String(release.release_type).toLowerCase(),
         release_at: dateInZone(
           release.release_date,
