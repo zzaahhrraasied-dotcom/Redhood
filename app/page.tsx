@@ -69,7 +69,7 @@ export default async function Home(){
       <div className="absolute bottom-7 left-0 right-0 text-center text-[9px] tracking-[.25em] text-zinc-600">SCROLL TO EXPLORE</div>
     </section>
 
-    {featured&&<section className="section border-t border-zinc-900">
+    {featured&&heroRelease?.id!==featured.id&&<section className="section border-t border-zinc-900">
       <div className="max-w-[1300px] mx-auto grid md:grid-cols-2 gap-12 items-center text-center">
         <div>
           <div className="eyebrow mb-5">Selected release / 001</div>
