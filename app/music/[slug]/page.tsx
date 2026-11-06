@@ -8,8 +8,11 @@ export const revalidate=0;
 export default async function MusicPage({params}:{params:Promise<{slug:string}>}) {
   const {slug}=await params;
   const [releases,settings]=await Promise.all([getReleases(),getSettings()]);
-  const normalizedSlug=slug.trim();
-  const item=releases.find((release:any)=>String(release.slug||'').trim()===normalizedSlug);
+  const normalizedSlug=decodeURIComponent(slug).trim();
+  const item=releases.find((release:any)=>
+    String(release.slug||'').trim()===normalizedSlug ||
+    String(release.id||'').trim()===normalizedSlug
+  );
   if(!item)notFound();
 
   return (

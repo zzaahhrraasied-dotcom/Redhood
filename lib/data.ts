@@ -23,26 +23,33 @@ export async function getSettings() {
 
 export async function getReleases(status?: string) {
   const db = await serverSupabase();
-  await db.rpc('publish_due_releases');
-
-  let q = db
+  const { data } = await db
     .from('releases')
     .select('*')
     .order('sort_order', { ascending: true })
     .order('release_at', { ascending: false });
 
-  if (status) q = q.eq('status', status);
+  const now = Date.now();
+  const releases = (data || []).map((release: any) => {
+    const releaseTime = release.release_at ? new Date(release.release_at).getTime() : Number.NaN;
+    const normalizedStatus =
+      release.status === 'upcoming' && Number.isFinite(releaseTime) && releaseTime <= now
+        ? 'released'
+        : release.status;
 
-  const { data } = await q;
-  return (data || []).map((release: any) => ({
-    ...release,
-    // Normalize legacy slugs so whitespace at either end cannot break release URLs.
-    slug: String(release.slug || '').trim(),
-    // Keep the UI's established field names while reading the live DB schema.
-    release_date: release.release_at,
-    release_type: release.type,
-    timezone: release.release_timezone,
-  }));
+    return {
+      ...release,
+      status: normalizedStatus,
+      // Normalize legacy slugs so whitespace at either end cannot break release URLs.
+      slug: String(release.slug || '').trim(),
+      // Keep the UI's established field names while reading the live DB schema.
+      release_date: release.release_at,
+      release_type: release.type,
+      timezone: release.release_timezone,
+    };
+  });
+
+  return status ? releases.filter((release: any) => release.status === status) : releases;
 }
 
 export async function getPages() {
