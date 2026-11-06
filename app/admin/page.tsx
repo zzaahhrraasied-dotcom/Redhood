@@ -9,7 +9,7 @@ type AnyRow = Record<string, any>;
 const blankRelease = {
   title: '',
   slug: '',
-  release_type: 'Single',
+  release_type: 'single',
   release_date: '',
   timezone: 'Asia/Tehran',
   description: '',
@@ -134,7 +134,7 @@ export default function Admin() {
       const body = {
         title: release.title,
         slug: release.slug,
-        type: release.release_type,
+        type: String(release.release_type).toLowerCase(),
         release_at: dateInZone(
           release.release_date,
           release.timezone || 'Asia/Tehran'
@@ -420,9 +420,9 @@ export default function Admin() {
                           release_type: e.target.value,
                         })}
                       >
-                        <option>Single</option>
-                        <option>EP</option>
-                        <option>Album</option>
+                        <option value="single">Single</option>
+                        <option value="ep">EP</option>
+                        <option value="album">Album</option>
                       </select>
                     </label>
 
@@ -595,7 +595,7 @@ export default function Admin() {
                       onClick={() => {
                         setRelease({
                           ...x,
-                          release_type: x.type || 'Single',
+                          release_type: String(x.type || 'single').toLowerCase(),
                           release_date: localInZone(
                             x.release_at,
                             x.release_timezone || 'Asia/Tehran'
