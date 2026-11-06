@@ -76,7 +76,6 @@ export default async function Home(){
             <div className="eyebrow mb-4">The catalog</div>
             <Link href="/music" className="group inline-flex items-center gap-4">
               <h2 className="display text-5xl sm:text-8xl transition group-hover:text-zinc-400">DISCOGRAPHY</h2>
-              <span className="text-sm text-zinc-500 opacity-0 transition group-hover:opacity-100">↗</span>
             </Link>
           </div>
           <span className="text-xs text-zinc-600 whitespace-nowrap">{released.length.toString().padStart(2,'0')} RELEASES</span>
