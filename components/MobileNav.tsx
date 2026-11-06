@@ -22,7 +22,7 @@ export default function MobileNav({ pages }: { pages: NavPage[] }) {
           <Link onClick={close} href="/music" className="border-b border-white/10 py-4 text-xs uppercase tracking-[.2em] text-zinc-300 hover:text-white">Discography</Link>
           {pages.map(page => <Link key={page.id} onClick={close} href={'/'+page.slug} className="border-b border-white/10 py-4 text-xs uppercase tracking-[.2em] text-zinc-300 hover:text-white">{page.title}</Link>)}
         </div>
-        <Link onClick={close} href="/music" className="btn mt-6 w-full">Explore releases ↗</Link>
+        <Link onClick={close} href="/music" className="btn mt-6 w-full">Explore releases</Link>
       </nav>}
     </div>
   );

@@ -15,7 +15,7 @@ export default async function Header() {
           <Link href="/music" className="hover:text-white">Discography</Link>
           {p.map((x: any) => <Link key={x.id} href={'/' + x.slug} className="hover:text-white">{x.title}</Link>)}
         </nav>
-        <Link href="/music" className="hidden md:inline-flex text-[10px] tracking-[.18em] uppercase border border-zinc-700 px-4 py-3 hover:bg-white hover:text-black transition">Explore releases ↗</Link>
+        <Link href="/music" className="hidden md:inline-flex text-[10px] tracking-[.18em] uppercase border border-zinc-700 px-4 py-3 hover:bg-white hover:text-black transition">Explore releases</Link>
         <MobileNav pages={p.map((x: any) => ({id:String(x.id),title:String(x.title),slug:String(x.slug)}))} />
       </div>
     </header>
