@@ -113,7 +113,7 @@ export default async function Home(){
     </section>
 
     <footer className="border-t border-zinc-900 px-6 py-10">
-      <div className="max-w-[1500px] mx-auto flex flex-col sm:flex-row justify-between gap-4">
+      <div className="max-w-[1500px] mx-auto flex flex-col items-center justify-center text-center gap-4">
         <span className="display tracking-[.2em]">RED HOOD © {new Date().getFullYear()}</span>
         <span className="text-[9px] tracking-[.2em] text-zinc-600">INDEPENDENT BY DESIGN.</span>
         <a href="/admin" className="text-[9px] tracking-[.2em] text-zinc-700">ADMIN</a>
