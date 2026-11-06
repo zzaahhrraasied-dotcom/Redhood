@@ -366,7 +366,7 @@ export default function Admin() {
         </div>
 
         <div className="flex gap-3">
-          <a href="/" className="btn btn-dark">View site ↗</a>
+          <a href="/" className="btn btn-dark">View site</a>
           <button onClick={signOut} className="btn btn-dark">
             Sign out
           </button>
