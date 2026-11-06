@@ -9,10 +9,10 @@ export async function getSettings() {
     .maybeSingle();
 
   return data || {
-    artist_name: 'RED HOOD',
+    site_name: 'RED HOOD',
     bio: 'Independent artist. South Tehran DNA.',
     profile_image: '',
-    logo_image: '',
+    logo_url: '',
     spotify_url: '',
     soundcloud_url: '',
     instagram_url: '',
