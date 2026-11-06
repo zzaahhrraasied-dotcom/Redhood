@@ -36,6 +36,8 @@ export async function getReleases(status?: string) {
   const { data } = await q;
   return (data || []).map((release: any) => ({
     ...release,
+    // Normalize legacy slugs so whitespace at either end cannot break release URLs.
+    slug: String(release.slug || '').trim(),
     // Keep the UI's established field names while reading the live DB schema.
     release_date: release.release_at,
     release_type: release.type,
