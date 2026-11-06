@@ -11,7 +11,7 @@ const blankRelease = {
   slug: '',
   release_type: 'Single',
   release_date: '',
-  timezone: 'Europe/Berlin',
+  timezone: 'Asia/Tehran',
   description: '',
   cover_url: '',
   spotify_url: '',
@@ -132,11 +132,22 @@ export default function Admin() {
 
     try {
       const body = {
-        ...release,
-        release_date: dateInZone(
+        title: release.title,
+        slug: release.slug,
+        type: release.release_type,
+        release_at: dateInZone(
           release.release_date,
-          release.timezone || 'UTC'
+          release.timezone || 'Asia/Tehran'
         ),
+        release_timezone: release.timezone || 'Asia/Tehran',
+        description: release.description,
+        cover_url: release.cover_url,
+        spotify_url: release.spotify_url,
+        soundcloud_url: release.soundcloud_url,
+        youtube_url: release.youtube_url,
+        status: release.status,
+        countdown_enabled: release.countdown_enabled,
+        coming_soon_label: release.coming_soon_label,
         sort_order: Number(release.sort_order) || 0,
       };
 
@@ -168,11 +179,24 @@ export default function Admin() {
     setMsg('');
 
     try {
+      const {
+        hero_image,
+        published,
+        ...pageFields
+      } = page;
+
+      const body = {
+        ...pageFields,
+        hero_image_url: hero_image,
+        is_published: published,
+        sort_order: Number(page.sort_order) || 0,
+      };
+
       const res = await fetch('/api/admin/pages', {
         method: editPage ? 'PATCH' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(
-          editPage ? { id: editPage, ...page } : page
+          editPage ? { id: editPage, ...body } : body
         ),
       });
 
@@ -562,7 +586,7 @@ export default function Admin() {
                     <div className="min-w-0 flex-1">
                       <div className="font-bold">{x.title}</div>
                       <div className="text-[10px] text-zinc-500 mt-1">
-                        {x.release_type} · {x.status} · {new Date(x.release_date).toLocaleString()}
+                        {x.type} · {x.status} · {new Date(x.release_at).toLocaleString()}
                       </div>
                     </div>
 
@@ -571,10 +595,12 @@ export default function Admin() {
                       onClick={() => {
                         setRelease({
                           ...x,
+                          release_type: x.type || 'Single',
                           release_date: localInZone(
-                            x.release_date,
-                            x.timezone || 'UTC'
+                            x.release_at,
+                            x.release_timezone || 'Asia/Tehran'
                           ),
+                          timezone: x.release_timezone || 'Asia/Tehran',
                         });
                         setEditRelease(x.id);
                       }}
@@ -643,7 +669,8 @@ export default function Admin() {
                     >
                       <option value="standard">Standard / narrow reading</option>
                       <option value="wide">Wide / editorial</option>
-                      <option value="centered">Centered / minimal</option>
+                      <option value="split">Split layout</option>
+                      <option value="immersive">Immersive / full-bleed</option>
                     </select>
                   </label>
 
@@ -721,14 +748,18 @@ export default function Admin() {
                     <div className="flex-1">
                       <div>{x.title}</div>
                       <div className="text-[10px] text-zinc-500">
-                        /{x.slug} · {x.published ? 'Published' : 'Draft'}
+                        /{x.slug} · {x.is_published ? 'Published' : 'Draft'}
                       </div>
                     </div>
 
                     <button
                       className="text-xs"
                       onClick={() => {
-                        setPage(x);
+                        setPage({
+                          ...x,
+                          hero_image: x.hero_image_url || '',
+                          published: !!x.is_published,
+                        });
                         setEditPage(x.id);
                       }}
                     >
