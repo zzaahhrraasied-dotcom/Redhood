@@ -35,7 +35,7 @@ export default async function Home(){
         {heroRelease?<>
           <div className="eyebrow mb-7">{heroIsUpcoming?'UPCOMING':'OUT NOW'} · RED HOOD</div>
           <h1 className="display uppercase leading-[.86] text-[clamp(4rem,12vw,12rem)] tracking-[-.045em] max-w-[1000px]">{heroRelease.title}</h1>
-          <div className="mt-10 flex flex-col sm:flex-row sm:items-end justify-between gap-8">
+          <div className="mt-10 flex flex-col items-center justify-center text-center gap-8">
             <div className="max-w-xl mx-auto">
               {heroRelease.description&&<p className="text-zinc-400 leading-7 text-sm">{heroRelease.description}</p>}
               {heroIsUpcoming?<Countdown date={heroRelease.release_date||heroRelease.release_at} enabled={heroRelease.countdown_enabled} label={heroRelease.coming_soon_label||'COMING SOON'}/>:<div className="flex flex-wrap justify-center gap-2 mt-5">
@@ -45,7 +45,7 @@ export default async function Home(){
               </div>}
               <Link href={'/music/'+encodeURIComponent(String(heroRelease.slug||heroRelease.id).trim())} className="btn btn-dark mt-5 inline-flex">VIEW RELEASE</Link>
             </div>
-            <div className="flex gap-4 items-center justify-center">
+            <div className="flex w-full justify-center gap-4 items-center">
               {s.spotify_url&&<a aria-label="Spotify" href={s.spotify_url} target="_blank" rel="noreferrer"><Music2/></a>}
               {s.soundcloud_url&&<a aria-label="SoundCloud" href={s.soundcloud_url} target="_blank" rel="noreferrer"><Cloud/></a>}
               {s.instagram_url&&<a aria-label="Instagram" href={s.instagram_url} target="_blank" rel="noreferrer"><Instagram/></a>}
@@ -57,7 +57,7 @@ export default async function Home(){
           <h1 className="display uppercase leading-[.78] text-[clamp(5rem,17vw,17rem)] tracking-[-.045em]">RED<br/><span className="text-zinc-500">HOOD</span></h1>
           <div className="mt-10 flex flex-col sm:flex-row sm:items-end justify-between gap-8">
             <p className="max-w-xl mx-auto text-zinc-400 leading-7 text-sm">{s.bio||'Independent artist. South Tehran DNA.'}</p>
-            <div className="flex gap-4 items-center">
+            <div className="flex w-full justify-center gap-4 items-center">
               {s.spotify_url&&<a aria-label="Spotify" href={s.spotify_url} target="_blank" rel="noreferrer"><Music2/></a>}
               {s.soundcloud_url&&<a aria-label="SoundCloud" href={s.soundcloud_url} target="_blank" rel="noreferrer"><Cloud/></a>}
               {s.instagram_url&&<a aria-label="Instagram" href={s.instagram_url} target="_blank" rel="noreferrer"><Instagram/></a>}
