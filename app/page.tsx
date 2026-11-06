@@ -82,7 +82,6 @@ export default async function Home(){
           <span className="text-xs text-zinc-600 whitespace-nowrap">{released.length.toString().padStart(2,'0')} RELEASES</span>
         </div>
         {released.length ? <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">{released.map((x:any)=><ReleaseCard key={x.id} item={x}/>)}</div> : <p className="text-zinc-600 text-sm">No releases published yet.</p>}
-        <div className="mt-10"><Link href="/music" className="btn btn-dark">View full discography ↗</Link></div>
       </div>
     </section>
 
