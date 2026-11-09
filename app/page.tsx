@@ -11,7 +11,10 @@ export default async function Home(){
   const [s,all,pages]=await Promise.all([getSettings(),getReleases(),getPages()]);
   const now=Date.now();
   const released=all.filter((x:any)=>x.status==='released');
-  const upcoming=all.filter((x:any)=>x.status==='upcoming');
+  const upcoming=all
+    .filter((x:any)=>x.status==='upcoming')
+    .filter((x:any)=>Number.isFinite(new Date(x.release_date||x.release_at).getTime())&&new Date(x.release_date||x.release_at).getTime()>now)
+    .sort((a:any,b:any)=>new Date(a.release_date||a.release_at).getTime()-new Date(b.release_date||b.release_at).getTime());
   const recentRelease=released
     .filter((x:any)=>{
       const time=new Date(x.release_date||x.release_at).getTime();
@@ -68,6 +71,16 @@ export default async function Home(){
       </div>
       <div className="absolute bottom-7 left-0 right-0 text-center text-[9px] tracking-[.25em] text-zinc-600">SCROLL TO EXPLORE</div>
     </section>
+
+    {upcoming.length>0&&<section id="upcoming" className="section border-t border-zinc-900">
+      <div className="max-w-[1500px] mx-auto">
+        <div className="eyebrow mb-4 text-center">Next transmissions</div>
+        <h2 className="display text-5xl sm:text-8xl mb-12 text-center">UPCOMING</h2>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {upcoming.map((item:any)=><ReleaseCard key={item.id} item={item}/>)}
+        </div>
+      </div>
+    </section>}
 
     {featured&&heroRelease?.id!==featured.id&&<section className="section border-t border-zinc-900">
       <div className="max-w-[1300px] mx-auto grid md:grid-cols-2 gap-12 items-center text-center">

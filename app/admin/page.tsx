@@ -262,7 +262,7 @@ export default function Admin() {
         ...current,
         background_image_url: j.background_image_url || '',
       }));
-      setMsg('Background applied to the live website.');
+      setMsg('Background draft saved. The live website appearance is unchanged.');
     } catch (e) {
       setMsg((e as Error).message);
     }
@@ -915,7 +915,7 @@ export default function Admin() {
               <div className="eyebrow">Visual management</div>
               <h2 className="display text-4xl">BACKGROUND MANAGER</h2>
               <p className="text-sm leading-6 text-zinc-400">
-                Upload an image to preview it here. Saving applies it as the website background.
+                Upload an image to preview and save it as a draft for a future website update. The live website will remain unchanged.
               </p>
 
               {fileField(
@@ -927,11 +927,11 @@ export default function Admin() {
               )}
 
               <div className="border border-zinc-800 p-4 text-xs leading-6 text-zinc-500">
-                LIVE BACKGROUND. Your selected image will appear behind the website content after saving. Remove the image and save to restore the default background.
+                DRAFT ONLY. This image is stored for future use. Saving or removing it will not change the public website background.
               </div>
 
               <button className="btn" disabled={busy}>
-                {busy ? 'Applying...' : 'Apply background to website'}
+                {busy ? 'Saving...' : 'Save background draft'}
               </button>
             </form>
           )}
